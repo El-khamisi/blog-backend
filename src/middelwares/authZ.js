@@ -1,0 +1,106 @@
+const { Admin, Author, Visitor } = require('../config/roles');
+const { failedRes } = require('../utils/response');
+const User = require('../services/user/user.model');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const { TOKENKEY } = require('../config/env');
+
+exports.isAdmin = (req, res, next) => {
+  try {
+    const role = res.locals.user.role;
+    if (role && role == Admin) return next();
+    else throw new Error('You are NOT authorized to Admins Only Routes');
+  } catch (e) {
+    if (e instanceof ReferenceError) return failedRes(res, 500, e);
+    else return failedRes(res, 401, e);
+  }
+};
+
+exports.isAuthor = (req, res, next) => {
+  try {
+    const role = res.locals.user.role;
+    if (role && (role == Author || role == Admin)) return next();
+    else throw new Error('You are NOT authorized to Author Routes');
+  } catch (e) {
+    if (e instanceof ReferenceError) return failedRes(res, 500, e);
+    else return failedRes(res, 401, e);
+  }
+};
+
+exports.myProfile = async (req, res, next) => {
+  try {
+    const _id = req.params.id;
+    const user_id = res.locals.id;
+
+    if (_id != user_id) {
+      throw new Error('It is NOT you');
+    } else {
+      return next();
+    }
+  } catch (e) {
+    if (e instanceof ReferenceError) return failedRes(res, 500, e);
+    else return failedRes(res, 401, e);
+  }
+};
+
+exports.myWork = async (req, res, next) => {
+  try {
+    const role = res.locals.user.role;
+    if (role && role == Admin) return next();
+    
+    const baseUrl = req.baseUrl;
+    const work_id = new mongoose.Types.ObjectId(req.params.id);
+    const user_id = res.locals.id;
+
+    const doc = await User.findById(user_id).exec();
+    let work = [];
+    if (baseUrl == 'article') {
+      work = doc.articles;
+    } else if (baseUrl == '') {
+      work = doc.articles;
+    } else if (baseUrl == '') {
+      work = doc.articles;
+    } else {
+      throw new Error('Invalid URL');
+    }
+    const indWrok = work.indexOf(work_id);
+    if (indWrok > -1) {
+      res.locals.reqWork = work_id;
+      return next();
+    } else {
+      throw new Error('Invalid Work ID');
+    }
+  } catch (e) {
+    if (e instanceof ReferenceError) return failedRes(res, 500, e);
+    else return failedRes(res, 401, e);
+  }
+};
+
+exports.isGuest = (req, res, next) => {
+  try {
+    let guest = req.cookies.__GuestId;
+    if (!guest) {
+      const userAgent = req.headers['user-agent'];
+      const guestObj = {
+        userAgent: userAgent,
+        readArticle: false,
+        shareArticle: false,
+
+        readPaper: false,
+        sharePaper: false,
+
+        viewVideo: false,
+        shareVideo: false,
+      };
+      res.cookie('__GuestId', guestObj, {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+      });
+    }
+
+    res.locals.guest = guestObj;
+    next();
+  } catch (e) {
+    if (e instanceof ReferenceError) return failedRes(res, 500, e);
+    else return failedRes(res, 401, e);
+  }
+};
