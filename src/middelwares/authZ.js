@@ -31,6 +31,9 @@ exports.myProfile = async (req, res, next) => {
   try {
     const _id = req.params.id;
     const user_id = res.locals.id;
+    
+    const role = res.locals.user.role;
+    if (role && role == Admin) return next();
 
     if (_id != user_id) {
       throw new Error('It is NOT you');
@@ -78,26 +81,24 @@ exports.myWork = async (req, res, next) => {
 
 exports.isGuest = (req, res, next) => {
   try {
-    let guest = req.cookies.__GuestId;
-    if (!guest) {
-      const userAgent = req.headers['user-agent'];
-      const guestObj = {
-        userAgent: userAgent,
-        readArticle: false,
-        shareArticle: false,
+    const userAgent = req.headers['user-agent'];
+    const newGuestCookie = {
+      userAgent: userAgent,
+      readArticles: [],
+      shareArticles: [],
 
-        readPaper: false,
-        sharePaper: false,
+      readPapers: [],
+      sharePapers: [],
 
-        viewVideo: false,
-        shareVideo: false,
-      };
-      res.cookie('__GuestId', guestObj, {
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
-      });
-    }
-
-    res.locals.guest = guestObj;
+      viewVideos: [],
+      shareVideos: [],
+    };
+    
+    const guestCookie = req.cookies.__GuestId ? JSON.parse(req.cookies.__GuestId) : newGuestCookie;
+    res.cookie('__GuestId', JSON.stringify(guestCookie), {
+      maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+    });
+    res.locals.guestCookie = guestCookie;
     next();
   } catch (e) {
     if (e instanceof ReferenceError) return failedRes(res, 500, e);
