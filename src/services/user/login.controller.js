@@ -4,7 +4,8 @@ const { successfulRes, failedRes } = require('../../utils/response');
 
 exports.regUser = async (req, res) => {
   const { name, email, password, facebook, twitter } = req.body;
-  const thumbnail = req.file?.path;
+  const file = req.file?.path;
+  let thumbnail;
   try {
     const saved = new User({
       name,
@@ -16,6 +17,9 @@ exports.regUser = async (req, res) => {
     });
 
     await saved.save();
+    if(file){
+      saved.thumbnail = await upload_image(file, saved._id, 'user_thumbs');
+    }
     const token = saved.generateToken(res);
     return successfulRes(res, 201, { token });
   } catch (e) {
