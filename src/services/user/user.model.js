@@ -68,16 +68,15 @@ userSchema.methods.generateToken = function (res) {
   return token;
 };
 
-/**
-  userSchema.pre('save', async function (next) {
-    if (this.email && this.password) {
-      this.password = bcrypt.hashSync(this.password, 10);
-      next();
-    } else {
-      throw new Error('Email and password are REQUIRED');
-    }
-  });
-*/
+
+userSchema.pre('save', async function (next) {
+  if (this.email && this.password) {
+    this.password = bcrypt.hashSync(this.password, 10);
+    next();
+  } else {
+    throw new Error('Email and password are REQUIRED');
+  }
+});
 
 //Exclude findOne for Login password
 userSchema.post(['save', 'find', 'findByIdAndUpdate', 'findByIdAndDelete'], function (doc, next) {
