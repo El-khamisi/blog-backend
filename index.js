@@ -20,7 +20,6 @@ if(NODE_ENV == 'dev'){
   });
 }else{
   mongoose.connect(DBURI_remote)
-  mongoose.connect(DBURI)
   .then(() => {
     console.log('connected to database successfully');
   })
