@@ -4,7 +4,7 @@ const { successfulRes, failedRes } = require('../../utils/response');
 exports.getSerieses = async (req, res) => {
   try {
     let q = req.query;
-    
+
     const response = await Video_series.find(q).exec();
 
     return successfulRes(res, 200, response);
@@ -16,7 +16,7 @@ exports.getSerieses = async (req, res) => {
 exports.getSeries = async (req, res) => {
   try {
     const _id = req.params.id;
-    let response = await Video_series.findById(_id).exec();
+    let response = await Video_series.findById(_id).populate('videos');
 
     await response.save();
 
@@ -28,11 +28,10 @@ exports.getSeries = async (req, res) => {
 
 exports.addSeries = async (req, res) => {
   try {
-    const { name, videos} = req.body;
+    const { name } = req.body;
 
     const saved = new Video_series({
       name,
-      videos
     });
 
     await saved.save();
@@ -46,7 +45,7 @@ exports.addSeries = async (req, res) => {
 exports.updateSeries = async (req, res) => {
   try {
     const _id = req.params.id;
-    const { name, videos} = req.body;
+    const { name, videos } = req.body;
 
     let doc = await Video_series.findById(_id).exec();
 

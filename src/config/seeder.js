@@ -12,7 +12,7 @@ const superAdmin = async () => {
   try {
     await User.findOneAndDelete({
       email: 'admin@test.com',
-    }).exec();  
+    }).exec();
     const saved = new User(prototype);
     await saved.save();
   } catch (e) {

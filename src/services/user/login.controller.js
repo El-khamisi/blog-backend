@@ -42,7 +42,7 @@ exports.logUser = async (req, res) => {
       return failedRes(res, 400, null, 'Email or Password is invalid');
     }
     const token = logged.generateToken(res);
-     console.log(req.cookies);
+    console.log(req.cookies);
 
     return successfulRes(res, 200, { token });
   } catch (e) {

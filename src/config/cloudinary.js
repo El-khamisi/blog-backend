@@ -1,3 +1,4 @@
+const { failedRes } = require('../utils/response');
 const { cloudinary_name, cloudinary_api_key, cloudinary_api_secret } = require('./env');
 const cloudinary = require('cloudinary').v2;
 
@@ -7,13 +8,13 @@ cloudinary.config({
   api_secret: cloudinary_api_secret,
 });
 
-exports.users_thumbs = async (imagePath, imageName) => {
+exports.upload_image = async (imagePath, imageName, tag) => {
   const img = await cloudinary.uploader.upload(
     imagePath,
     {
-      public_id: 'assets/users_thumbs/' + imageName,
+      public_id: `assets/${tag}/${imageName}`,
       overwrite: true,
-      tags: 'users_thumbs',
+      tags: `${tag}`,
     },
     function (err, image) {
       if (err) throw new Error('An error has been occurred when uploading a photo');

@@ -12,8 +12,12 @@ router.get('/article_share/:id', isGuest, shareArticle);
 
 //Admin && Author
 // router.post('/article', authN, isAuthor, imageUpload.array('photos'), addArticle);
-router.post('/article', imageUpload.single('icon'), imageUpload.single('img'), towPhotos,addArticle);
-router.put('/article/:id', authN, myWork, imageUpload.array('photos'), updateArticle);
-router.delete('/article/:id', authN, myWork, deleteArticle);
+// router.put('/article/:id', authN, myWork, imageUpload.array('photos'), updateArticle);
+// router.delete('/article/:id', authN, myWork, deleteArticle);
+
+router.post('/article', imageUpload.array('photos'), addArticle);
+router.put('/article/:id',  imageUpload.array('photos'), updateArticle);
+router.delete('/article/:id', deleteArticle);
+
 
 module.exports = router;

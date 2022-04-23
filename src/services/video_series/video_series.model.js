@@ -14,11 +14,10 @@ const seriesSchema = new mongoose.Schema(
   }
 );
 
-
-userSchema.virtual('videos',{
+userSchema.virtual('videos', {
   ref: 'Video',
   localField: '_id',
-  foreignField: 'author'
+  foreignField: 'author',
 });
 
 module.exports = mongoose.model('Video_series', seriesSchema);

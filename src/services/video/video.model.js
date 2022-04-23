@@ -7,6 +7,7 @@ const videoSchema = new mongoose.Schema(
     square_cover: { type: String },
     rectangle_cover: { type: String },
     categories: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
+    series: { type: mongoose.Types.ObjectId, ref: 'Video_series' },
     youtube_url: { type: String },
     summary: { type: String },
     viewCount: { type: Number, default: 0 },

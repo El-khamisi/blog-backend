@@ -10,8 +10,8 @@ const roles = require('../../config/roles');
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
-    email: { type: String, trim: true, unique: true},
-    password: { type: String},
+    email: { type: String, trim: true, unique: true },
+    password: { type: String },
     role: { type: String, enum: [...Object.values(roles), 'Invalid role title'], default: roles.Visitor },
     thumbnail: { type: String },
     facebook: { type: String },
@@ -27,22 +27,22 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual('articles',{
+userSchema.virtual('articles', {
   ref: 'Article',
   localField: '_id',
-  foreignField: 'author'
+  foreignField: 'author',
 });
 
-userSchema.virtual('papers',{
+userSchema.virtual('papers', {
   ref: 'Paper',
   localField: '_id',
-  foreignField: 'author'
+  foreignField: 'author',
 });
 
-userSchema.virtual('videos',{
+userSchema.virtual('videos', {
   ref: 'Video',
   localField: '_id',
-  foreignField: 'author'
+  foreignField: 'author',
 });
 
 userSchema.methods.generateToken = function (res) {
@@ -63,7 +63,7 @@ userSchema.methods.generateToken = function (res) {
   res.cookie('authorization', token, {
     maxAge: 24 * 60 * 60 * 1000, //24 Hours OR Oneday
     secure: true,
-    sameSite: 'None'
+    sameSite: 'None',
   });
   return token;
 };

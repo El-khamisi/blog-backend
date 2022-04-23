@@ -31,7 +31,7 @@ exports.myProfile = async (req, res, next) => {
   try {
     const _id = req.params.id;
     const user_id = res.locals.id;
-    
+
     const role = res.locals.user.role;
     if (role && role == Admin) return next();
 
@@ -50,7 +50,7 @@ exports.myWork = async (req, res, next) => {
   try {
     const role = res.locals.user.role;
     if (role && role == Admin) return next();
-    
+
     const baseUrl = req.baseUrl;
     const work_id = new mongoose.Types.ObjectId(req.params.id);
     const user_id = res.locals.id;
@@ -93,7 +93,7 @@ exports.isGuest = (req, res, next) => {
       viewVideos: [],
       shareVideos: [],
     };
-    
+
     const guestCookie = req.cookies.__GuestId ? JSON.parse(req.cookies.__GuestId) : newGuestCookie;
     res.cookie('__GuestId', JSON.stringify(guestCookie), {
       maxAge: 1000 * 60 * 60 * 24 * 365 * 5,

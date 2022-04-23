@@ -4,7 +4,7 @@ const { authN } = require('../../middelwares/authN');
 const { myWork, isGuest, isAuthor } = require('../../middelwares/authZ');
 
 const { imageUpload } = require('../../config/multer');
-const { getPapers, getPaper, addPaper, updatePaper, deletePaper, sharePaper} = require('./paper.controller');
+const { getPapers, getPaper, addPaper, updatePaper, deletePaper, sharePaper } = require('./paper.controller');
 
 router.get('/papers', getPapers);
 router.get('/paper/:id', isGuest, getPaper);
