@@ -40,13 +40,7 @@ exports.addVideo = async (req, res) => {
     const { name, author, categories, series, youtube_url, summary } = req.body;
     const files = req.files;
     let photos = [];
-    if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'video_thumbs');
-       photos.push(url);
-      })
-    }
-
+    
     const saved = new Video({
       name,
       author,
@@ -57,7 +51,14 @@ exports.addVideo = async (req, res) => {
       youtube_url,
       summary,
     });
-
+    if(files){
+      files.forEach(async e=>{
+       const url = await upload_image(e.path, saved._id, 'video_thumbs');
+       photos.push(url);
+      })
+    }
+    saved.icon = photos ? photos[0] : 'NULL',
+    saved.img = photos ? photos[1] : 'NULL',
     await saved.save();
 
     return successfulRes(res, 201, saved);
@@ -76,7 +77,7 @@ exports.updateVideo = async (req, res) => {
     let doc = await Video.findById(_id).exec();
     if(files){
       files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'video_thumbs');
+       const url = await upload_image(e.path, doc._id, 'video_thumbs');
        photos.push(url);
       })
     }

@@ -39,13 +39,7 @@ exports.addPaper = async (req, res) => {
     const { name, author, categories, paragraphs } = req.body;
     const files = req.files;
     let photos = [];
-    if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
-       photos.push(url);
-      })
-    }
-
+    
     const saved = new Paper({
       name,
       author,
@@ -54,7 +48,14 @@ exports.addPaper = async (req, res) => {
       rectangle_cover: photos ? photos[1] : 'NULL',
       paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
-
+    if(files){
+      files.forEach(async e=>{
+       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
+       photos.push(url);
+      })
+    }
+    saved.icon = photos ? photos[0] : 'NULL',
+    saved.img = photos ? photos[1] : 'NULL',
     await saved.save();
 
     return successfulRes(res, 201, saved);
@@ -73,7 +74,7 @@ exports.updatePaper = async (req, res) => {
     let doc = await Paper.findById(_id).exec();
     if(files){
       files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
+       const url = await upload_image(e.path, doc._id, 'papers_thumbs');
        photos.push(url);
       })
     }

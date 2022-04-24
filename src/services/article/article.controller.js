@@ -49,12 +49,6 @@ exports.addArticle = async (req, res) => {
     const { name, about, writer, cat, paragraphs } = req.body;
     const files = req.files;
     let photos = [];
-    if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'articles_thumbs');
-       photos.push(url);
-      })
-    }
 
     const saved = new Article({
       name,
@@ -66,6 +60,14 @@ exports.addArticle = async (req, res) => {
       paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
 
+    if(files){
+      files.forEach(async e=>{
+       const url = await upload_image(e.path, saved._id, 'articles_thumbs');
+       photos.push(url);
+      })
+    }
+    saved.icon = photos ? photos[0] : 'NULL',
+    saved.img = photos ? photos[1] : 'NULL',
     await saved.save();
 
     return successfulRes(res, 201, saved);
