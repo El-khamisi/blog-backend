@@ -40,6 +40,12 @@ exports.addVideo = async (req, res) => {
     const { name, author, categories, series, youtube_url, summary } = req.body;
     const files = req.files;
     let photos = [];
+    if(files){
+      files.forEach(async e=>{
+       const url = await upload_image(e.path, saved._id, 'video_thumbs');
+       photos.push(url);
+      })
+    }
 
     const saved = new Video({
       name,
@@ -52,12 +58,6 @@ exports.addVideo = async (req, res) => {
       summary,
     });
 
-    if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'video_thumbs');
-       photos.push(url);
-      })
-    }
     await saved.save();
 
     return successfulRes(res, 201, saved);

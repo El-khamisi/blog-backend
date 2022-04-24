@@ -39,6 +39,12 @@ exports.addPaper = async (req, res) => {
     const { name, author, categories, paragraphs } = req.body;
     const files = req.files;
     let photos = [];
+    if(files){
+      files.forEach(async e=>{
+       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
+       photos.push(url);
+      })
+    }
 
     const saved = new Paper({
       name,
@@ -49,12 +55,6 @@ exports.addPaper = async (req, res) => {
       paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
 
-    if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
-       photos.push(url);
-      })
-    }
     await saved.save();
 
     return successfulRes(res, 201, saved);
