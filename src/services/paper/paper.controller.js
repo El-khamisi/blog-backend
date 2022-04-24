@@ -44,18 +44,19 @@ exports.addPaper = async (req, res) => {
       name,
       author,
       categories,
-      square_cover: photos ? photos[0] : 'NULL',
-      rectangle_cover: photos ? photos[1] : 'NULL',
+      square_cover: 'NULL',
+      rectangle_cover:'NULL',
       paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
     if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'papers_thumbs');
-       photos.push(url);
-      })
+      let photos = [];
+      for(const file of files){
+        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+        photos.push(url)
+      }
+      saved.icon = photos[0]
+      saved.img = photos[1]
     }
-    saved.icon = photos ? photos[0] : 'NULL',
-    saved.img = photos ? photos[1] : 'NULL',
     await saved.save();
 
     return successfulRes(res, 201, saved);
@@ -69,22 +70,23 @@ exports.updatePaper = async (req, res) => {
     const _id = req.params.id;
     const { name, author, categories, paragraphs } = req.body;
     const files = req.files;
-    let photos = [];
 
     let doc = await Paper.findById(_id).exec();
     if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, doc._id, 'papers_thumbs');
-       photos.push(url);
-      })
+      let photos = [];
+      for(const file of files){
+        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+        photos.push(url)
+      }
+      doc.icon = photos ? photos[0] : doc.icon;
+      doc.img = photos ? photos[1] : doc.img;
     }
 
     doc.name = name ? name : doc.name;
     doc.author = author ? author : doc.author;
     doc.categories = categories ? categories : doc.categories;
     doc.paragraphs = paragraphs ? paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
-    doc.square_cover = photos ? photos[0] : doc.square_cover;
-    doc.rectangle_cover = photos ? photos[1] : doc.rectangle_cover;
+
 
     await doc.save();
 

@@ -46,19 +46,20 @@ exports.addVideo = async (req, res) => {
       author,
       categories,
       series,
-      square_cover: photos ? photos[0] : 'NULL',
-      rectangle_cover: photos ? photos[1] : 'NULL',
+      square_cover: 'NULL',
+      rectangle_cover:'NULL',
       youtube_url,
       summary,
     });
     if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, saved._id, 'video_thumbs');
-       photos.push(url);
-      })
+      let photos = [];
+      for(const file of files){
+        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+        photos.push(url)
+      }
+      saved.icon = photos[0]
+      saved.img = photos[1]
     }
-    saved.icon = photos ? photos[0] : 'NULL',
-    saved.img = photos ? photos[1] : 'NULL',
     await saved.save();
 
     return successfulRes(res, 201, saved);
@@ -72,15 +73,18 @@ exports.updateVideo = async (req, res) => {
     const _id = req.params.id;
     const { name, author, categories, series, youtube_url, summary } = req.body;
     const files = req.files;
-    let photos = [];
 
     let doc = await Video.findById(_id).exec();
     if(files){
-      files.forEach(async e=>{
-       const url = await upload_image(e.path, doc._id, 'video_thumbs');
-       photos.push(url);
-      })
+      let photos = [];
+      for(const file of files){
+        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+        photos.push(url)
+      }
+      doc.icon = photos ? photos[0] : doc.icon;
+      doc.img = photos ? photos[1] : doc.img;
     }
+
 
     doc.name = name ? name : doc.name;
     doc.author = author ? author : doc.author;
@@ -88,8 +92,6 @@ exports.updateVideo = async (req, res) => {
     doc.series = series ? series : doc.series;
     doc.youtube_url = youtube_url ? youtube_url : doc.youtube_url;
     doc.summary = summary ? summary : doc.summary;
-    doc.square_cover = photos ? photos[0] : doc.square_cover;
-    doc.rectangle_cover = photos ? photos[1] : doc.rectangle_cover;
 
     await doc.save();
 
