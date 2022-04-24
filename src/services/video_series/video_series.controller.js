@@ -1,4 +1,4 @@
-const Video_series = require('./Series_series.model');
+const Video_series = require('./video_series.model');
 const { successfulRes, failedRes } = require('../../utils/response');
 
 exports.getSerieses = async (req, res) => {
@@ -6,6 +6,13 @@ exports.getSerieses = async (req, res) => {
     let q = req.query;
 
     const response = await Video_series.find(q).exec();
+    if (response?.length && response.length > 0) {
+      for (let i = 0; i < response.length; i++) {
+        response[i] = await response[i].populate('videos');
+      }
+    } else if (response) {
+      response = await response.populate('videos');
+    }
 
     return successfulRes(res, 200, response);
   } catch (e) {

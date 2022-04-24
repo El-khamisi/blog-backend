@@ -62,8 +62,6 @@ userSchema.methods.generateToken = function (res) {
 
   res.cookie('authorization', token, {
     maxAge: 24 * 60 * 60 * 1000, //24 Hours OR Oneday
-    secure: true,
-    sameSite: 'None',
   });
   return token;
 };
@@ -72,10 +70,8 @@ userSchema.methods.generateToken = function (res) {
 userSchema.pre('save', async function (next) {
   if (this.email && this.password) {
     this.password = bcrypt.hashSync(this.password, 10);
-    next();
-  } else {
-    throw new Error('Email and password are REQUIRED');
   }
+  next();
 });
 
 //Exclude findOne for Login password
