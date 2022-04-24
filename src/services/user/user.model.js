@@ -10,7 +10,7 @@ const roles = require('../../config/roles');
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
-    email: { type: String, trim: true, unique: true },
+    email: { type: String, trim: true},
     password: { type: String },
     role: { type: String, enum: [...Object.values(roles), 'Invalid role title'], default: roles.Visitor },
     thumbnail: { type: String },
