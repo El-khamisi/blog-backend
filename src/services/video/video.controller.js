@@ -39,18 +39,19 @@ exports.addVideo = async (req, res) => {
   try {
     const { name, author, categories, series, youtube_url, summary } = req.body;
     const files = req.files;
-    let photos = [];
     
     const saved = new Video({
       name,
       author,
       categories,
       series,
-      square_cover: 'NULL',
-      rectangle_cover:'NULL',
+      icon: 'NULL',
+      img:'NULL',
       youtube_url,
       summary,
     });
+    await saved.save();
+
     if(files){
       let photos = [];
       for(const file of files){
@@ -81,8 +82,8 @@ exports.updateVideo = async (req, res) => {
         const url = await upload_image(file.path, saved._id, 'articles_thumbs');
         photos.push(url)
       }
-      doc.icon = photos ? photos[0] : doc.icon;
-      doc.img = photos ? photos[1] : doc.img;
+      doc.icon = photos[0] ? photos[0] : doc.icon;
+      doc.img = photos[1] ? photos[1] : doc.img;
     }
 
 

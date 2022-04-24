@@ -38,16 +38,18 @@ exports.addPaper = async (req, res) => {
   try {
     const { name, author, categories, paragraphs } = req.body;
     const files = req.files;
-    let photos = [];
     
     const saved = new Paper({
       name,
       author,
       categories,
-      square_cover: 'NULL',
-      rectangle_cover:'NULL',
+      icon: 'NULL',
+      img:'NULL',
       paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
+    await saved.save();
+
+
     if(files){
       let photos = [];
       for(const file of files){
@@ -78,8 +80,8 @@ exports.updatePaper = async (req, res) => {
         const url = await upload_image(file.path, saved._id, 'articles_thumbs');
         photos.push(url)
       }
-      doc.icon = photos ? photos[0] : doc.icon;
-      doc.img = photos ? photos[1] : doc.img;
+      doc.icon = photos[0] ? photos[0] : doc.icon;
+      doc.img = photos[1] ? photos[1] : doc.img;
     }
 
     doc.name = name ? name : doc.name;

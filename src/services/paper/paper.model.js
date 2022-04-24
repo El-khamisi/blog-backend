@@ -4,8 +4,8 @@ const paperSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
     author: { type: mongoose.Types.ObjectId, ref: 'User' },
-    square_cover: { type: String },
-    rectangle_cover: { type: String },
+    icon: { type: String },
+    img: { type: String },
     categories: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
     paragraphs: [
       {
