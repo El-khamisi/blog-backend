@@ -9,7 +9,7 @@ const articleSchema = new mongoose.Schema(
     icon: { type: String },
     img: { type: String },
     cat: [{ type: String, trim: true }],
-    type: [{ type: String, trim: true }],
+    type: { type: String, trim: true },
     paragraphs: [
       {
         title: String,
