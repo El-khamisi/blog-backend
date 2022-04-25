@@ -6,7 +6,7 @@ exports.getArticles = async (req, res) => {
   try {
     let q = req.query;
 
-    let response = await Article.find(q).exec();
+    let response = await Article.find(q).sort('-createdOn');
     if (response?.length && response.length > 0) {
       for (let i = 0; i < response.length; i++) {
         response[i] = await response[i];
@@ -31,6 +31,8 @@ exports.getArticle = async (req, res) => {
       guestCookie.readArticles.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfView += 1;
     }
@@ -136,6 +138,8 @@ exports.shareArticle = async (req, res) => {
       guestCookie.shareArticles.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfShare += 1;
     }

@@ -23,6 +23,8 @@ exports.getVideo = async (req, res) => {
       guestCookie.viewVideos.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfView += 1;
     }
@@ -126,6 +128,8 @@ exports.shareVideo = async (req, res) => {
       guestCookie.shareVideos.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfShare += 1;
     }

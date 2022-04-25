@@ -23,6 +23,8 @@ exports.getPaper = async (req, res) => {
       guestCookie.readPapers.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfView += 1;
     }
@@ -123,6 +125,8 @@ exports.sharePaper = async (req, res) => {
       guestCookie.sharePapers.push(_id);
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+        sameSite: 'none',
+        secure: true
       });
       response.numberOfShare += 1;
     }
