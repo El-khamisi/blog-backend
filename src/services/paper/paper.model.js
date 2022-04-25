@@ -4,9 +4,11 @@ const paperSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
     author: { type: mongoose.Types.ObjectId, ref: 'User' },
+    writer: { type: String, trim: true },
     icon: { type: String },
     img: { type: String },
-    categories: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
+    cat: [{ type: String, trim: true }],
+    type: { type: String, trim: true },
     paragraphs: [
       {
         title: String,
@@ -23,5 +25,12 @@ const paperSchema = new mongoose.Schema(
     },
   }
 );
+
+paperSchema.pre('save', async function () {
+  if (this.author) {
+    const doc = await mongoose.connection.models.User.findById(this.author).exec();
+    this.writer = doc.name;
+  }
+});
 
 module.exports = mongoose.model('Paper', paperSchema);

@@ -37,13 +37,14 @@ exports.getVideo = async (req, res) => {
 
 exports.addVideo = async (req, res) => {
   try {
-    const { name, author, categories, series, youtube_url, summary } = req.body;
+    const { name, writer, cat, type, series, youtube_url, summary } = req.body;
     const files = req.files;
     
     const saved = new Video({
       name,
-      author,
-      categories,
+      author: writer,
+      cat,
+      type,
       series,
       icon: 'NULL',
       img:'NULL',
@@ -72,7 +73,7 @@ exports.addVideo = async (req, res) => {
 exports.updateVideo = async (req, res) => {
   try {
     const _id = req.params.id;
-    const { name, author, categories, series, youtube_url, summary } = req.body;
+    const { name, writer, cat, type, series, youtube_url, summary } = req.body;
     const files = req.files;
 
     let doc = await Video.findById(_id).exec();
@@ -88,8 +89,9 @@ exports.updateVideo = async (req, res) => {
 
 
     doc.name = name ? name : doc.name;
-    doc.author = author ? author : doc.author;
-    doc.categories = categories ? categories : doc.categories;
+    doc.author = writer ? writer : doc.author;
+    doc.cat = cat ? cat : doc.cat;
+    doc.type = type ? type : doc.type;
     doc.series = series ? series : doc.series;
     doc.youtube_url = youtube_url ? youtube_url : doc.youtube_url;
     doc.summary = summary ? summary : doc.summary;

@@ -36,16 +36,18 @@ exports.getPaper = async (req, res) => {
 
 exports.addPaper = async (req, res) => {
   try {
-    const { name, author, categories, paragraphs } = req.body;
+    const { name, about, writer, cat, type, paragraphs } = req.body;
     const files = req.files;
     
     const saved = new Paper({
       name,
-      author,
-      categories,
+      about,
+      author: writer,
+      cat,
+      type,
       icon: 'NULL',
       img:'NULL',
-      paragraphs: paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
+      paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
     await saved.save();
 
@@ -70,7 +72,7 @@ exports.addPaper = async (req, res) => {
 exports.updatePaper = async (req, res) => {
   try {
     const _id = req.params.id;
-    const { name, author, categories, paragraphs } = req.body;
+    const { name, writer, cat, type, paragraphs } = req.body;
     const files = req.files;
 
     let doc = await Paper.findById(_id).exec();
@@ -85,9 +87,10 @@ exports.updatePaper = async (req, res) => {
     }
 
     doc.name = name ? name : doc.name;
-    doc.author = author ? author : doc.author;
-    doc.categories = categories ? categories : doc.categories;
-    doc.paragraphs = paragraphs ? paragraphs.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
+    doc.author = writer ? writer : doc.author;
+    doc.cat = cat ? cat : doc.cat;
+    doc.type = type ? type : doc.type;
+    doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
 
 
     await doc.save();
