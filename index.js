@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 
 //Config
@@ -9,7 +10,7 @@ const port =   PORT|| 8080;
 
 // const seeder = require('./src/models/seeder.model')
 
-
+fs.rmSync('./tmp', {recursive: true, force: true});
 if(NODE_ENV == 'dev'){
   mongoose.connect(DBURI)
   .then(() => {

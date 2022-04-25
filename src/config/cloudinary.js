@@ -1,6 +1,7 @@
 const { failedRes } = require('../utils/response');
 const { cloudinary_name, cloudinary_api_key, cloudinary_api_secret } = require('./env');
 const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 
 cloudinary.config({
   cloud_name: cloudinary_name,
@@ -20,5 +21,8 @@ exports.upload_image = async (imagePath, imageName, tag) => {
       if (err) throw new Error('An error has been occurred when uploading a photo');
     }
   );
+    if(fs.existsSync(imagePath)){
+      fs.rmSync(imagePath);
+    }
   return img.url;
 };
