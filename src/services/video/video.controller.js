@@ -1,5 +1,7 @@
 const Video = require('./video.model');
 const { successfulRes, failedRes } = require('../../utils/response');
+const {upload_image} = require('../../config/cloudinary');
+
 
 exports.getVideos = async (req, res) => {
   try {
