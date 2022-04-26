@@ -12,7 +12,7 @@ router.post('/signup', imageUpload.single('photo'), regUser);
 router.post('/logout', logout);
 
 //Admin
-router.get('/users', authN, isAdmin, getUsers);
+router.get('/users', getUsers);
 router.get('/user/:id', authN, isAdmin, getUser);
 router.post('/user', authN, isAdmin, imageUpload.single('photo'), addUser);
 router.put('/user/:id', authN, isAdmin, imageUpload.single('photo'), updateUser);
