@@ -59,8 +59,9 @@ exports.addVideo = async (req, res) => {
 
     if(files){
       let photos = [];
-      for(const file of files){
-        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+      for(let i=0; i<files.length; i++){
+        const file=files[i];
+        const url = await upload_image(file.path, `${saved._id}_${i}`, 'video_thumbs');
         photos.push(url)
       }
       saved.icon = photos[0]
@@ -83,8 +84,9 @@ exports.updateVideo = async (req, res) => {
     let doc = await Video.findById(_id).exec();
     if(files){
       let photos = [];
-      for(const file of files){
-        const url = await upload_image(file.path, saved._id, 'articles_thumbs');
+      for(let i=0; i<files.length; i++){
+        const file=files[i];
+        const url = await upload_image(file.path, `${saved._id}_${i}`, 'video_thumbs');
         photos.push(url)
       }
       doc.icon = photos[0] ? photos[0] : doc.icon;
