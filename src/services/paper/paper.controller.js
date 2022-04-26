@@ -16,7 +16,7 @@ exports.getPapers = async (req, res) => {
 exports.getPaper = async (req, res) => {
   try {
     const _id = req.params.id;
-    let response = await Paper.findById(_id).exec();
+    let response = await Paper.findById(_id).sort('-createdOn');
     const guestCookie = res.locals.guestCookie;
 
     if (guestCookie.readPapers.indexOf(_id) < 0) {

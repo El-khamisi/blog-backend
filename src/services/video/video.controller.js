@@ -7,7 +7,7 @@ exports.getVideos = async (req, res) => {
   try {
     let q = req.query;
 
-    const response = await Video.find(q).exec();
+    const response = await Video.find(q).sort('-createdOn');
 
     return successfulRes(res, 200, response);
   } catch (e) {
@@ -41,7 +41,7 @@ exports.getVideo = async (req, res) => {
 
 exports.addVideo = async (req, res) => {
   try {
-    const { name, writer, cat, type, series, youtube_url, summary } = req.body;
+    const { name, writer, cat, type, series, youtube_url, about } = req.body;
     const files = req.files;
     
     const saved = new Video({
@@ -53,7 +53,7 @@ exports.addVideo = async (req, res) => {
       icon: 'NULL',
       img:'NULL',
       youtube_url,
-      summary,
+      about,
     });
     await saved.save();
 
@@ -98,7 +98,7 @@ exports.updateVideo = async (req, res) => {
     doc.type = type ? type : doc.type;
     doc.series = series ? series : doc.series;
     doc.youtube_url = youtube_url ? youtube_url : doc.youtube_url;
-    doc.summary = summary ? summary : doc.summary;
+    doc.about = about ? about : doc.about;
 
     await doc.save();
 
