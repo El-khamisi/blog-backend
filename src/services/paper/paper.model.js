@@ -15,8 +15,8 @@ const paperSchema = new mongoose.Schema(
         text: String,
       },
     ],
-    readsCount: { type: Number, default: 0 },
-    shareCount: { type: Number, default: 0 },
+    numberOfShare: { type: Number, default: 0 },
+    numberOfView: { type: Number, default: 0 },
   },
   {
     timestamps: {
