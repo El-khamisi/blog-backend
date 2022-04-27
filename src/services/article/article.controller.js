@@ -1,6 +1,6 @@
 const Article = require('./article.model');
 const { successfulRes, failedRes } = require('../../utils/response');
-const {upload_image} = require('../../config/cloudinary');
+const { upload_image } = require('../../config/cloudinary');
 
 exports.getArticles = async (req, res) => {
   try {
@@ -32,7 +32,7 @@ exports.getArticle = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfView += 1;
     }
@@ -50,29 +50,28 @@ exports.addArticle = async (req, res) => {
     // const user_id = res.locals.user.id;
     const { name, about, writer, cat, type, paragraphs } = req.body;
     const files = req.files;
-    
+
     const saved = new Article({
       name,
       about,
       author: writer,
       cat,
       type,
-      icon: "NULL",
-      img: "NULL",
+      icon: 'NULL',
+      img: 'NULL',
       paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
     await saved.save();
 
-
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${saved._id}_${i}`, 'articles_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
-      saved.icon =  photos[0]
-      saved.img = photos[1]
+      saved.icon = photos[0];
+      saved.img = photos[1];
     }
     await saved.save();
 
@@ -90,14 +89,13 @@ exports.updateArticle = async (req, res) => {
     const { name, writer, cat, type, paragraphs } = req.body;
     const files = req.files;
 
-
     let doc = await Article.findById(_id).exec();
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${doc._id}_${i}`, 'articles_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
       doc.icon = photos[0] ? photos[0] : doc.icon;
       doc.img = photos[1] ? photos[1] : doc.img;
@@ -108,7 +106,6 @@ exports.updateArticle = async (req, res) => {
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
-    
 
     await doc.save();
 
@@ -141,7 +138,7 @@ exports.shareArticle = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfShare += 1;
     }

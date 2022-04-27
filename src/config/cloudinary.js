@@ -21,8 +21,8 @@ exports.upload_image = async (imagePath, imageName, tag) => {
       if (err) throw new Error('An error has been occurred when uploading a photo');
     }
   );
-    if(fs.existsSync(imagePath)){
-      fs.rmSync(imagePath);
-    }
+  if (fs.existsSync(imagePath)) {
+    fs.rmSync(imagePath);
+  }
   return img.url;
 };

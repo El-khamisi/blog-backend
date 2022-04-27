@@ -19,5 +19,4 @@ router.delete('/article/:id', authN, myWork, deleteArticle);
 // router.put('/article/:id',  imageUpload.array('photos'), updateArticle);
 // router.delete('/article/:id', deleteArticle);
 
-
 module.exports = router;

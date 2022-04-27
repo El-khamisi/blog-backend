@@ -1,7 +1,6 @@
 const Video = require('./video.model');
 const { successfulRes, failedRes } = require('../../utils/response');
-const {upload_image} = require('../../config/cloudinary');
-
+const { upload_image } = require('../../config/cloudinary');
 
 exports.getVideos = async (req, res) => {
   try {
@@ -26,7 +25,7 @@ exports.getVideo = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfView += 1;
     }
@@ -43,7 +42,7 @@ exports.addVideo = async (req, res) => {
   try {
     const { name, writer, cat, type, series, youtube_url, about } = req.body;
     const files = req.files;
-    
+
     const saved = new Video({
       name,
       author: writer,
@@ -51,21 +50,21 @@ exports.addVideo = async (req, res) => {
       type,
       series,
       icon: 'NULL',
-      img:'NULL',
+      img: 'NULL',
       youtube_url,
       about,
     });
     await saved.save();
 
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${saved._id}_${i}`, 'video_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
-      saved.icon = photos[0]
-      saved.img = photos[1]
+      saved.icon = photos[0];
+      saved.img = photos[1];
     }
     await saved.save();
 
@@ -82,17 +81,16 @@ exports.updateVideo = async (req, res) => {
     const files = req.files;
 
     let doc = await Video.findById(_id).exec();
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${saved._id}_${i}`, 'video_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
       doc.icon = photos[0] ? photos[0] : doc.icon;
       doc.img = photos[1] ? photos[1] : doc.img;
     }
-
 
     doc.name = name ? name : doc.name;
     doc.author = writer ? writer : doc.author;
@@ -133,7 +131,7 @@ exports.shareVideo = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfShare += 1;
     }

@@ -23,7 +23,6 @@ router.delete('/user/:id', authN, isAdmin, deleteUser);
 // router.put('/user/:id',  imageUpload.single('photo'), updateUser);
 // router.delete('/user/:id',  deleteUser);
 
-
 //Authors Users
 router.get('/profile/:id', authN, myProfile, getUser);
 router.put('/profile/:id', authN, myProfile, imageUpload.single('photo'), updateUser);

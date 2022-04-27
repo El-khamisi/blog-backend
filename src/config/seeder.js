@@ -15,7 +15,7 @@ const superAdmin = async () => {
     }).exec();
     const saved = new User(prototype);
     await saved.save();
-    console.log('ADMIN USER CREATED SUCCESSFULLY')
+    console.log('ADMIN USER CREATED SUCCESSFULLY');
   } catch (e) {
     console.log('CAN NOT CREATE SUPER ADMIN' + e.message);
   }

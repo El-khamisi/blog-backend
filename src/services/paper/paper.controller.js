@@ -24,7 +24,7 @@ exports.getPaper = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfView += 1;
     }
@@ -40,7 +40,7 @@ exports.addPaper = async (req, res) => {
   try {
     const { name, about, writer, cat, type, paragraphs } = req.body;
     const files = req.files;
-    
+
     const saved = new Paper({
       name,
       about,
@@ -48,21 +48,20 @@ exports.addPaper = async (req, res) => {
       cat,
       type,
       icon: 'NULL',
-      img:'NULL',
+      img: 'NULL',
       paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
     });
     await saved.save();
 
-
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${saved._id}_${i}`, 'paper_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
-      saved.icon = photos[0]
-      saved.img = photos[1]
+      saved.icon = photos[0];
+      saved.img = photos[1];
     }
     await saved.save();
 
@@ -79,12 +78,12 @@ exports.updatePaper = async (req, res) => {
     const files = req.files;
 
     let doc = await Paper.findById(_id).exec();
-    if(files){
+    if (files) {
       let photos = [];
-      for(let i=0; i<files.length; i++){
-        const file=files[i];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const url = await upload_image(file.path, `${doc._id}_${i}`, 'paper_thumbs');
-        photos.push(url)
+        photos.push(url);
       }
       doc.icon = photos[0] ? photos[0] : doc.icon;
       doc.img = photos[1] ? photos[1] : doc.img;
@@ -95,7 +94,6 @@ exports.updatePaper = async (req, res) => {
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
-
 
     await doc.save();
 
@@ -128,7 +126,7 @@ exports.sharePaper = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
       response.numberOfShare += 1;
     }

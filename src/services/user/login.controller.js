@@ -17,7 +17,7 @@ exports.regUser = async (req, res) => {
     });
 
     await saved.save();
-    if(file){
+    if (file) {
       saved.thumbnail = await upload_image(file, saved._id, 'user_thumbs');
     }
     const token = saved.generateToken(res);

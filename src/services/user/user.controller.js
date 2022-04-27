@@ -1,6 +1,6 @@
 const User = require('./user.model');
 const { successfulRes, failedRes } = require('../../utils/response');
-const {upload_image} = require('../../config/cloudinary');
+const { upload_image } = require('../../config/cloudinary');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -37,7 +37,7 @@ exports.addUser = async (req, res) => {
   const { name, email, password, role, facebook, twitter } = req.body;
   const file = req.file?.path;
   let thumbnail;
-  
+
   try {
     const saved = new User({
       name,
@@ -49,7 +49,7 @@ exports.addUser = async (req, res) => {
       thumbnail,
     });
 
-    if(file){
+    if (file) {
       saved.thumbnail = await upload_image(file, saved._id, 'user_thumbs');
     }
     await saved.save();
@@ -67,7 +67,7 @@ exports.updateUser = async (req, res) => {
     const file = req.file?.path;
 
     let doc = await User.findById(_id);
-    if(file){
+    if (file) {
       doc.thumbnail = await upload_image(file, doc._id, 'user_thumbs');
     }
 

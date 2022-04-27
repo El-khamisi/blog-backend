@@ -9,6 +9,7 @@ const paper = require('./services/paper/paper.routes');
 const video = require('./services/video/video.routes');
 const category = require('./services/category/category.routes');
 const serieses = require('./services/video_series/video_series.routes');
+const Subscription = require('./services/subscription/subscription.routes');
 
 module.exports = (app) => {
   // Middlewares
@@ -18,10 +19,12 @@ module.exports = (app) => {
       app.use(passport.session());
       */
 
-  app.use(cors({
-    origin: true,
-    credentials: true
-  }));
+  app.use(
+    cors({
+      origin: true,
+      credentials: true,
+    })
+  );
   app.use(express.json());
   app.use(cookieParser());
 
@@ -33,5 +36,6 @@ module.exports = (app) => {
   app.use(paper);
   app.use(video);
   app.use(category);
-  app.use(serieses)
+  app.use(serieses);
+  app.use(Subscription);
 };

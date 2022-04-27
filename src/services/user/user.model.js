@@ -10,7 +10,7 @@ const roles = require('../../config/roles');
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
-    email: { type: String, trim: true},
+    email: { type: String, trim: true },
     password: { type: String },
     role: { type: String, enum: [...Object.values(roles), 'Invalid role title'], default: roles.Visitor },
     thumbnail: { type: String },
@@ -63,11 +63,10 @@ userSchema.methods.generateToken = function (res) {
   res.cookie('authorization', token, {
     maxAge: 24 * 60 * 60 * 1000, //24 Hours OR Oneday
     sameSite: 'none',
-    secure: true
+    secure: true,
   });
   return token;
 };
-
 
 userSchema.pre('save', async function (next) {
   if (this.email && this.password) {
