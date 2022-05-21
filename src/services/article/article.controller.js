@@ -49,7 +49,7 @@ exports.getArticle = async (req, res) => {
 exports.addArticle = async (req, res) => {
   try {
     // const user_id = res.locals.user.id;
-    const { name, about, writer, cat, type, paragraphs, editor } = req.body;
+    const { name, about, writer, cat, type, paragraphs, body, editor } = req.body;
     const files = req.files;
 
     const saved = new Article({
@@ -61,7 +61,8 @@ exports.addArticle = async (req, res) => {
       type,
       icon: 'NULL',
       img: 'NULL',
-      paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
+      // paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })),
+      body
     });
     await saved.save();
 
@@ -88,7 +89,7 @@ exports.updateArticle = async (req, res) => {
     const role = res.locals.user.role;
 
     const _id = req.params.id;
-    const { name, writer, cat, type, paragraphs, editor } = req.body;
+    const { name, writer, cat, type, paragraphs, body, editor } = req.body;
     const files = req.files;
 
     let doc = await Article.findById(_id).exec();
@@ -108,7 +109,8 @@ exports.updateArticle = async (req, res) => {
     doc.editor = editor ? editor : doc.editor;
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
-    doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
+    doc.body = body ? body : doc.body;
+    // doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
 
     await doc.save();
 

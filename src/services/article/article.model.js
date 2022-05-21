@@ -11,12 +11,13 @@ const articleSchema = new mongoose.Schema(
     img: { type: String },
     cat: [{ type: String, trim: true }],
     type: { type: String, trim: true },
-    paragraphs: [
-      {
-        title: String,
-        article: String,
-      },
-    ],
+    // paragraphs: [
+    //   {
+    //     title: String,
+    //     article: String,
+    //   },
+    // ],
+    body: {type: String},
     numberOfShare: { type: Number, default: 0 },
     numberOfView: { type: Number, default: 0 },
   },
