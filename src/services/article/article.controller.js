@@ -1,6 +1,7 @@
 const Article = require('./article.model');
 const { successfulRes, failedRes } = require('../../utils/response');
 const { upload_image } = require('../../config/cloudinary');
+const { NODE_ENV } = require('../../config/env');
 
 exports.getArticles = async (req, res) => {
   try {
@@ -32,7 +33,7 @@ exports.getArticle = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfView += 1;
     }
@@ -48,13 +49,14 @@ exports.getArticle = async (req, res) => {
 exports.addArticle = async (req, res) => {
   try {
     // const user_id = res.locals.user.id;
-    const { name, about, writer, cat, type, paragraphs } = req.body;
+    const { name, about, writer, cat, type, paragraphs, editor } = req.body;
     const files = req.files;
 
     const saved = new Article({
       name,
       about,
       author: writer,
+      editor,
       cat,
       type,
       icon: 'NULL',
@@ -86,7 +88,7 @@ exports.updateArticle = async (req, res) => {
     const role = res.locals.user.role;
 
     const _id = req.params.id;
-    const { name, writer, cat, type, paragraphs } = req.body;
+    const { name, writer, cat, type, paragraphs, editor } = req.body;
     const files = req.files;
 
     let doc = await Article.findById(_id).exec();
@@ -103,6 +105,7 @@ exports.updateArticle = async (req, res) => {
 
     doc.name = name ? name : doc.name;
     doc.author = writer ? writer : doc.author;
+    doc.editor = editor ? editor : doc.editor;
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
@@ -138,7 +141,7 @@ exports.shareArticle = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfShare += 1;
     }

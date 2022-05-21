@@ -6,6 +6,7 @@ const articleSchema = new mongoose.Schema(
     about: { type: String, trim: true },
     author: { type: mongoose.Types.ObjectId, ref: 'User' },
     writer: { type: String, trim: true },
+    editor: {type: String, trim: true},
     icon: { type: String },
     img: { type: String },
     cat: [{ type: String, trim: true }],

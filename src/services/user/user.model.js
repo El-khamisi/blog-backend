@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 
 //configuration
-const { TOKENKEY } = require('../../config/env');
+const { TOKENKEY, NODE_ENV } = require('../../config/env');
 const roles = require('../../config/roles');
 
 const userSchema = new mongoose.Schema(
@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
     thumbnail: { type: String },
     facebook: { type: String },
     twitter: { type: String },
+    description: { type: String },
   },
   {
     timestamps: {
@@ -63,7 +64,7 @@ userSchema.methods.generateToken = function (res) {
   res.cookie('authorization', token, {
     maxAge: 24 * 60 * 60 * 1000, //24 Hours OR Oneday
     sameSite: 'none',
-    secure: true,
+    secure: NODE_ENV == 'dev' ? false : true,
   });
   return token;
 };

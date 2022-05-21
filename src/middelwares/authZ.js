@@ -3,7 +3,7 @@ const { failedRes } = require('../utils/response');
 const User = require('../services/user/user.model');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const { TOKENKEY } = require('../config/env');
+const { TOKENKEY, NODE_ENV } = require('../config/env');
 
 exports.isAdmin = (req, res, next) => {
   try {
@@ -97,6 +97,8 @@ exports.isGuest = (req, res, next) => {
     const guestCookie = req.cookies.__GuestId ? JSON.parse(req.cookies.__GuestId) : newGuestCookie;
     res.cookie('__GuestId', JSON.stringify(guestCookie), {
       maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
+      sameSite: 'none',
+    secure: NODE_ENV == 'dev' ? false : true,
     });
     res.locals.guestCookie = guestCookie;
     next();

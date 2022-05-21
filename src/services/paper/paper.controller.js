@@ -1,5 +1,6 @@
 const Paper = require('./paper.model');
 const { successfulRes, failedRes } = require('../../utils/response');
+const { NODE_ENV } = require('../../config/env');
 
 exports.getPapers = async (req, res) => {
   try {
@@ -24,7 +25,7 @@ exports.getPaper = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfView += 1;
     }
@@ -126,7 +127,7 @@ exports.sharePaper = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfShare += 1;
     }

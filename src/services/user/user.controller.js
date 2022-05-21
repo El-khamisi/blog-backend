@@ -34,7 +34,7 @@ exports.getUser = async (req, res) => {
 };
 
 exports.addUser = async (req, res) => {
-  const { name, email, password, role, facebook, twitter } = req.body;
+  const { name, email, password, role, facebook, twitter, description } = req.body;
   const file = req.file?.path;
   let thumbnail;
 
@@ -46,6 +46,7 @@ exports.addUser = async (req, res) => {
       role,
       facebook,
       twitter,
+      description,
       thumbnail,
     });
 
@@ -63,7 +64,7 @@ exports.addUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const _id = req.params.id;
-    const { name, email, password, facebook, twitter } = req.body;
+    const { name, email, password, facebook, twitter, description } = req.body;
     const file = req.file?.path;
 
     let doc = await User.findById(_id);
@@ -76,6 +77,8 @@ exports.updateUser = async (req, res) => {
     doc.password = password ? password : doc.password;
     doc.facebook = facebook ? facebook : doc.facebook;
     doc.twitter = twitter ? twitter : doc.twitter;
+    doc.description = description ? description : doc.description;
+
 
     const valid = doc.validateSync();
     if (valid) throw valid;

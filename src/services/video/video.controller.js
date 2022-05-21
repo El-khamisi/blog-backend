@@ -1,6 +1,7 @@
 const Video = require('./video.model');
 const { successfulRes, failedRes } = require('../../utils/response');
 const { upload_image } = require('../../config/cloudinary');
+const { NODE_ENV } = require('../../config/env');
 
 exports.getVideos = async (req, res) => {
   try {
@@ -25,7 +26,7 @@ exports.getVideo = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfView += 1;
     }
@@ -131,7 +132,7 @@ exports.shareVideo = async (req, res) => {
       res.cookie('__GuestId', JSON.stringify(guestCookie), {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
         sameSite: 'none',
-        secure: true,
+        secure: NODE_ENV == 'dev' ? false : true,
       });
       response.numberOfShare += 1;
     }
