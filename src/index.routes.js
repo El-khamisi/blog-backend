@@ -25,6 +25,7 @@ module.exports = (app) => {
       credentials: true,
     })
   );
+  
   app.use(express.json());
   app.use(cookieParser());
 
