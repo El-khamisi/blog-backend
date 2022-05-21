@@ -19,13 +19,14 @@ module.exports = (app) => {
       app.use(passport.session());
       */
 
-  app.use(
+
+    app.use(
     cors({
       origin: true,
       credentials: true,
     })
   );
-  
+
   app.use(express.json());
   app.use(cookieParser());
 
