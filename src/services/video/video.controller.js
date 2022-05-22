@@ -78,7 +78,7 @@ exports.addVideo = async (req, res) => {
 exports.updateVideo = async (req, res) => {
   try {
     const _id = req.params.id;
-    const { name, writer, cat, type, series, youtube_url, summary } = req.body;
+    const { name, writer, cat, type, series, youtube_url, about } = req.body;
     const files = req.files;
 
     let doc = await Video.findById(_id).exec();
