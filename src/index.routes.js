@@ -24,8 +24,11 @@ module.exports = (app) => {
     cors({
       origin: ['http://localhost:3000', 'http://46.101.189.190'],
       credentials: true,
-    })
-  );
+    }), (req, res, next)=>{
+      res.set('Access-Control-Allow-Origin', '*');
+      next();
+    }
+    );
 
   app.use(express.json());
   app.use(cookieParser());
