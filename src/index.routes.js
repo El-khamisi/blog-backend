@@ -22,12 +22,9 @@ module.exports = (app) => {
 
     app.use(
     cors({
-      origin: ['http://localhost:3000', 'http://46.101.189.190'],
+      origin: 'http://localhost:3000',
       credentials: true,
-    }), (req, res, next)=>{
-      res.set('Access-Control-Allow-Origin', '*');
-      next();
-    }
+    })
     );
 
   app.use(express.json());
