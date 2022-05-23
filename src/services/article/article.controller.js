@@ -57,7 +57,7 @@ exports.addArticle = async (req, res) => {
       about,
       author: writer,
       editor,
-	  editor_2
+	  editor_2,
       trans,
       cat,
       type,
