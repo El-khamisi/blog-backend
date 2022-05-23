@@ -14,7 +14,7 @@ const Subscription = require('./services/subscription/subscription.routes');
 module.exports = (app) => {
   // Middlewares
 
-  /*        
+	  /*        
       app.use(passport.initialize());
       app.use(passport.session());
       */
