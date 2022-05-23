@@ -8,6 +8,7 @@ const articleSchema = new mongoose.Schema(
     writer: { type: String, trim: true },
     editor: {type: String, trim: true},
 	trans: {type: String, trim: true},
+	editor_2: {type: String, trim: true},
     icon: { type: String },
     img: { type: String },
     cat: [{ type: String, trim: true }],

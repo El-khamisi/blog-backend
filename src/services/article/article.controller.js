@@ -49,7 +49,7 @@ exports.getArticle = async (req, res) => {
 exports.addArticle = async (req, res) => {
   try {
     // const user_id = res.locals.user.id;
-    const { name, about, writer, cat, type, paragraphs, body, editor, trans } = req.body;
+    const { name, about, writer, cat, type, paragraphs, body, editor, trans, editor_2 } = req.body;
     const files = req.files;
 
     const saved = new Article({
@@ -57,6 +57,7 @@ exports.addArticle = async (req, res) => {
       about,
       author: writer,
       editor,
+	  editor_2
       trans,
       cat,
       type,
@@ -90,7 +91,7 @@ exports.updateArticle = async (req, res) => {
     const role = res.locals.user.role;
 
     const _id = req.params.id;
-    const { name, writer, cat, type, paragraphs, body, editor, trans } = req.body;
+    const { name, writer, cat, type, paragraphs, body, editor, trans, editor_2 } = req.body;
     const files = req.files;
 
     let doc = await Article.findById(_id).exec();
@@ -109,6 +110,7 @@ exports.updateArticle = async (req, res) => {
     doc.author = writer ? writer : doc.author;
     doc.editor = editor ? editor : doc.editor;
     doc.trans = trans ? trans : doc.trans;
+	doc.editor_2 = editor_2 ? editor_2 : doc.editor_2;
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.body = body ? body : doc.body;
