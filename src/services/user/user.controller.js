@@ -79,7 +79,6 @@ exports.updateUser = async (req, res) => {
     doc.twitter = twitter ? twitter : doc.twitter;
     doc.description = description ? description : doc.description;
 
-
     const valid = doc.validateSync();
     if (valid) throw valid;
     await doc.save();

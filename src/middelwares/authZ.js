@@ -98,7 +98,7 @@ exports.isGuest = (req, res, next) => {
     res.cookie('__GuestId', JSON.stringify(guestCookie), {
       maxAge: 1000 * 60 * 60 * 24 * 365 * 5,
       sameSite: 'none',
-    secure: NODE_ENV == 'dev' ? false : true,
+      secure: NODE_ENV == 'dev' ? false : true,
     });
     res.locals.guestCookie = guestCookie;
     next();
