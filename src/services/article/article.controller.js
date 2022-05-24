@@ -110,7 +110,7 @@ exports.updateArticle = async (req, res) => {
     doc.author = writer ? writer : doc.author;
     doc.editor = editor ? editor : doc.editor;
     doc.trans = trans ? trans : doc.trans;
-	doc.editor_2 = editor_2 ? editor_2 : doc.editor_2;
+	  doc.editor_2 = editor_2 ? editor_2 : doc.editor_2;
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.body = body ? body : doc.body;

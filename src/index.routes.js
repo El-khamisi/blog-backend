@@ -26,7 +26,7 @@ module.exports = (app) => {
   //   })
   // );
   app.use((req, res, next)=>{
-    const allowedOrigins = ['http://localhost:3000', 'http://46.101.189.190'];
+    const allowedOrigins = ['http://localhost:3000', 'http://46.101.189.190', 'https://46.101.189.190'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
          res.set('Access-Control-Allow-Origin', origin);
