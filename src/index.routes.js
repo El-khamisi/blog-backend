@@ -10,6 +10,8 @@ const video = require('./services/video/video.routes');
 const category = require('./services/category/category.routes');
 const serieses = require('./services/video_series/video_series.routes');
 const Subscription = require('./services/subscription/subscription.routes');
+const { authN } = require('./middelwares/authN');
+const { successfulRes } = require('./utils/response');
 
 module.exports = (app) => {
   // Middlewares
@@ -43,6 +45,7 @@ module.exports = (app) => {
   //Routers
   app.use(morgan('dev'));
 
+  app.use('/verify', authN, (req, res)=>successfulRes(res, 200, {token: res.locals.user}));
   app.use(user);
   app.use(article);
   app.use(paper);
