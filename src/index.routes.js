@@ -28,11 +28,11 @@ module.exports = (app) => {
   //   })
   // );
   app.use((req, res, next)=>{
-    const allowedOrigins = ['http://localhost:3000', 'http://46.101.189.190', 'https://46.101.189.190'];
+    // const allowedOrigins = ['http://localhost:3000', 'http://46.101.189.190', 'https://46.101.189.190'];
     const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-         res.set('Access-Control-Allow-Origin', origin);
-    }
+    // if (allowedOrigins.includes(origin)) {
+    // }
+    res.set('Access-Control-Allow-Origin', origin);
     res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.set('Access-Control-Allow-Credentials', true);
