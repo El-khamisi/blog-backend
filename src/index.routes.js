@@ -45,7 +45,7 @@ module.exports = (app) => {
   //Routers
   app.use(morgan('dev'));
 
-  app.all('/verify', authN, (req, res)=>successfulRes(res, 200, {token: res.locals.user}));
+  app.get('/verify', authN, (req, res)=>successfulRes(res, 200, {token: res.locals.user}));
   app.use(user);
   app.use(article);
   app.use(paper);
