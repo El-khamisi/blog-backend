@@ -29,6 +29,6 @@ router.put('/profile/:id', authN, myProfile, imageUpload.single('photo'), update
 router.delete('/profile/:id', authN, myProfile, deleteUser);
 
 //Ordinary Users
-// router.get('/authors', )
+
 
 module.exports = router;

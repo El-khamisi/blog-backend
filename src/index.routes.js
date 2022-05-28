@@ -46,6 +46,7 @@ module.exports = (app) => {
   app.use(morgan('dev'));
 
   app.get('/verify', authN, (req, res)=>successfulRes(res, 200, {token: res.locals.user}));
+  
   app.use(user);
   app.use(article);
   app.use(paper);
