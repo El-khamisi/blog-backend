@@ -3,26 +3,33 @@ const mongoose = require('mongoose');
 const paperSchema = new mongoose.Schema(
   {
     name: { type: String, trim: true },
+    about: { type: String, trim: true },
     author: { type: mongoose.Types.ObjectId, ref: 'User' },
     writer: { type: String, trim: true },
+    editor: { type: String, trim: true },
+    trans: { type: String, trim: true },
+    editor_2: { type: String, trim: true },
     icon: { type: String },
     img: { type: String },
     cat: [{ type: String, trim: true }],
     type: { type: String, trim: true },
-    paragraphs: [
-      {
-        title: String,
-        text: String,
-      },
-    ],
+    // paragraphs: [
+    //   {
+    //     title: String,
+    //     article: String,
+    //   },
+    // ],
+    body: { type: String },
     numberOfShare: { type: Number, default: 0 },
     numberOfView: { type: Number, default: 0 },
   },
   {
     timestamps: {
-      createdAt: 'created_at',
+      createdAt: 'createdOn',
       updatedAt: 'updated_at',
     },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -32,5 +39,6 @@ paperSchema.pre('save', async function () {
     this.writer = doc.name;
   }
 });
+
 
 module.exports = mongoose.model('Paper', paperSchema);
