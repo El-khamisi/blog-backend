@@ -6,14 +6,14 @@ exports.getUsers = async (req, res) => {
   try {
     let q = req.query;
 
-    let response = await User.find(q).exec();
-    if (response?.length && response.length > 0) {
-      for (let i = 0; i < response.length; i++) {
-        response[i] = await response[i].populate('articles papers videos');
+    const response = await User.aggregate([
+      {
+        $match: q,
+      },
+      {
+        $project: {_id: 1, name: 1, email: 1, thumbnail: 1}
       }
-    } else if (response) {
-      response = await response.populate('articles papers videos');
-    }
+    ]);
     return successfulRes(res, 200, response);
   } catch (e) {
     return failedRes(res, 500, e);
