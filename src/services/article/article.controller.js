@@ -91,7 +91,7 @@ exports.updateArticle = async (req, res) => {
     const role = res.locals.user.role;
 
     const _id = req.params.id;
-    const { name, writer, cat, type, paragraphs, body, editor, trans, editor_2 } = req.body;
+    const { name, about,  writer, cat, type, paragraphs, body, editor, trans, editor_2 } = req.body;
     const files = req.files;
 
     let doc = await Article.findById(_id).exec();
@@ -114,6 +114,7 @@ exports.updateArticle = async (req, res) => {
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.body = body ? body : doc.body;
+    doc.about = about ? about : doc.about;
     // doc.paragraphs = paragraphs ? paragraphs?.map((e) => ({ title: e.split(',')[0], article: e.split(',')[1] })) : doc.paragraphs;
 
     await doc.save();
