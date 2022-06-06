@@ -1,6 +1,7 @@
 const User = require('../user/user.model');
 const bcrypt = require('bcrypt');
 const { successfulRes, failedRes } = require('../../utils/response');
+const {NODE_ENV} = require('../../config/env');
 
 exports.regUser = async (req, res) => {
   const { name, email, password, facebook, twitter } = req.body;
@@ -55,8 +56,11 @@ exports.logUser = async (req, res) => {
 
 exports.logout = (req, res) => {
   try {
-    //irrelevant
-    res.clearCookie('authorization');
+    
+    res.cookie('authorization', '', {
+      sameSite: NODE_ENV == 'dev' ? false : 'none',
+      secure: NODE_ENV == 'dev' ? false : true,
+    });
     successfulRes(res, 200, 'You have been logged out successfully');
   } catch (err) {
     failedRes(res, 500, 'Invalid logout operation');
