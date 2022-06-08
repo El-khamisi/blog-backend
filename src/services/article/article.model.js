@@ -36,9 +36,8 @@ const articleSchema = new mongoose.Schema(
 articleSchema.pre('save', async function () {
   if (this.author) {
     const doc = await mongoose.connection.models.User.findById(this.author).exec();
-    if(doc){
+    if (doc) {
       this.writer = doc.name;
-
     }
   }
 });

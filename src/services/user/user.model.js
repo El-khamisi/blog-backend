@@ -63,7 +63,7 @@ userSchema.methods.generateToken = function (res) {
   );
 
   res.cookie('authorization', token, {
-    maxAge: 24 * 60 * 60 * 1000, //24 Hours OR Oneday
+    maxAge: 7 * 24 * 60 * 60 * 1000, //7 days OR one week
     sameSite: 'none',
     secure: NODE_ENV == 'dev' ? false : true,
   });

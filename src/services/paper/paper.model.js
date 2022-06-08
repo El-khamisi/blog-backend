@@ -40,5 +40,4 @@ paperSchema.pre('save', async function () {
   }
 });
 
-
 module.exports = mongoose.model('Paper', paperSchema);

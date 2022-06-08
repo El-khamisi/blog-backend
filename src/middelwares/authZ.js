@@ -7,11 +7,11 @@ const { TOKENKEY, NODE_ENV } = require('../config/env');
 
 exports.isAdmin = (req, res, next) => {
   try {
-    if(res.locals.user){
+    if (res.locals.user) {
       const role = res.locals.user.role;
       if (role && role == Admin) return next();
       else throw new Error('You are NOT authorized to Admin Routes');
-    }else{
+    } else {
       throw new Error('Login first');
     }
   } catch (e) {

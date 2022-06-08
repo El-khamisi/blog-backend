@@ -1,3 +1,4 @@
+const User = require('../user/user.model');
 const Paper = require('./paper.model');
 const { successfulRes, failedRes } = require('../../utils/response');
 const { upload_image } = require('../../config/cloudinary');
@@ -45,6 +46,25 @@ exports.getPaper = async (req, res) => {
     return failedRes(res, 500, e);
   }
 };
+exports.getAdminPaper = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const response = await Paper.findById(_id).exec();
+    const writers = await User.aggregate([
+      {
+        $match: { role: Author },
+      },
+      {
+        $project: { _id: 1, name: 1 },
+      },
+    ]);
+    response._doc.writers = writers;
+
+    return successfulRes(res, 200, { response });
+  } catch (e) {
+    return failedRes(res, 500, e);
+  }
+};
 
 exports.addPaper = async (req, res) => {
   try {
@@ -57,14 +77,14 @@ exports.addPaper = async (req, res) => {
       about,
       author: writer,
       editor,
-	  editor_2,
+      editor_2,
       trans,
       cat,
       type,
       icon: 'NULL',
       img: 'NULL',
       // paragraphs: paragraphs?.map((e) => ({ title: e.split(',')[0], Paper: e.split(',')[1] })),
-      body
+      body,
     });
     await saved.save();
 
@@ -110,7 +130,7 @@ exports.updatePaper = async (req, res) => {
     doc.author = writer ? writer : doc.author;
     doc.editor = editor ? editor : doc.editor;
     doc.trans = trans ? trans : doc.trans;
-	  doc.editor_2 = editor_2 ? editor_2 : doc.editor_2;
+    doc.editor_2 = editor_2 ? editor_2 : doc.editor_2;
     doc.cat = cat ? cat : doc.cat;
     doc.type = type ? type : doc.type;
     doc.body = body ? body : doc.body;

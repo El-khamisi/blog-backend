@@ -11,10 +11,9 @@ router.get('/article/:id', isGuest, getArticle);
 router.get('/article_share/:id', isGuest, shareArticle);
 
 //Admin && Author
-router.get('/admin/article/:id',authN, isAdmin, getAdminArticle);
+router.get('/admin/article/:id', authN, isAdmin, getAdminArticle);
 router.post('/article', authN, isAuthor, imageUpload.array('photos'), addArticle);
 router.put('/article/:id', authN, myWork, imageUpload.array('photos'), updateArticle);
 router.delete('/article/:id', authN, myWork, deleteArticle);
-
 
 module.exports = router;

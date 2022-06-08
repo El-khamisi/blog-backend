@@ -8,11 +8,11 @@ exports.getUsers = async (req, res) => {
 
     const response = await User.aggregate([
       {
-        $match: {role, is_deleted: false},
+        $match: { role, is_deleted: false },
       },
       {
-        $project: {_id: 1, name: 1, email: 1, thumbnail: 1}
-      }
+        $project: { _id: 1, name: 1, email: 1, thumbnail: 1 },
+      },
     ]);
     return successfulRes(res, 200, response);
   } catch (e) {
@@ -25,7 +25,7 @@ exports.getUser = async (req, res) => {
     const _id = req.params.id;
 
     const response = await User.findById(_id).exec();
-    if(response.is_deleted) {
+    if (response.is_deleted) {
       throw new Error('User is deleted');
     }
     response = response.populate('articles papers videos');
@@ -72,7 +72,7 @@ exports.updateUser = async (req, res) => {
     const file = req.file?.path;
 
     let doc = await User.findById(_id);
-    if(doc.is_deleted) {
+    if (doc.is_deleted) {
       throw new Error('User is deleted');
     }
     if (file) {
@@ -100,7 +100,7 @@ exports.deleteUser = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const response = await User.findByIdAndUpdate(_id, {is_deleted: true});
+    const response = await User.findByIdAndUpdate(_id, { is_deleted: true });
     return successfulRes(res, 200, response);
   } catch (e) {
     return failedRes(res, 500, e);
