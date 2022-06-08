@@ -24,7 +24,7 @@ exports.getUser = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const response = await User.findById(_id).exec();
+    let response = await User.findById(_id).exec();
     if (response.is_deleted) {
       throw new Error('User is deleted');
     }
