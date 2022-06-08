@@ -4,11 +4,11 @@ const { upload_image } = require('../../config/cloudinary');
 
 exports.getUsers = async (req, res) => {
   try {
-    let q = req.query;
+    let role = req.query.role;
 
     const response = await User.aggregate([
       {
-        $match: q,
+        $match: {role, is_deleted: false},
       },
       {
         $project: {_id: 1, name: 1, email: 1, thumbnail: 1}
@@ -24,7 +24,11 @@ exports.getUser = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const response = await User.findById(_id).populate('articles papers videos');
+    const response = await User.findById(_id).exec();
+    if(response.is_deleted) {
+      throw new Error('User is deleted');
+    }
+    response = response.populate('articles papers videos');
     response.password = undefined;
 
     return successfulRes(res, 200, response);
@@ -68,6 +72,9 @@ exports.updateUser = async (req, res) => {
     const file = req.file?.path;
 
     let doc = await User.findById(_id);
+    if(doc.is_deleted) {
+      throw new Error('User is deleted');
+    }
     if (file) {
       doc.thumbnail = await upload_image(file, doc._id, 'user_thumbs');
     }
@@ -93,7 +100,7 @@ exports.deleteUser = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const response = await User.findByIdAndDelete(_id).exec();
+    const response = await User.findByIdAndUpdate(_id, {is_deleted: true});
     return successfulRes(res, 200, response);
   } catch (e) {
     return failedRes(res, 500, e);

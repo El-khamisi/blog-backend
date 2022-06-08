@@ -39,8 +39,6 @@ articleSchema.pre('save', async function () {
     if(doc){
       this.writer = doc.name;
 
-    }else{
-      throw new Error('Author not found');
     }
   }
 });

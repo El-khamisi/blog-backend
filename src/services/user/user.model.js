@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema(
     facebook: { type: String },
     twitter: { type: String },
     description: { type: String },
+    is_deleted: { type: Boolean, default: false },
   },
   {
     timestamps: {

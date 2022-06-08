@@ -1,8 +1,9 @@
 const Article = require('./article.model');
+const User = require('../user/user.model');
+const {Author} = require('../../config/roles');
 const { successfulRes, failedRes } = require('../../utils/response');
 const { upload_image } = require('../../config/cloudinary');
 const { NODE_ENV } = require('../../config/env');
-
 exports.getArticles = async (req, res) => {
   try {
     let q = req.query;
@@ -40,6 +41,25 @@ exports.getArticle = async (req, res) => {
 
     await response.save();
 
+    return successfulRes(res, 200, response);
+  } catch (e) {
+    return failedRes(res, 500, e);
+  }
+};
+
+exports.getAdminArticle = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const response = await Article.findById(_id).exec();
+    const writers = await User.aggregate([
+      {
+        $match: {role: Author},
+      },
+      {
+        $project: {_id: 1, name: 1}
+      }
+    ]);
+    response.writers = writers;
     return successfulRes(res, 200, response);
   } catch (e) {
     return failedRes(res, 500, e);
