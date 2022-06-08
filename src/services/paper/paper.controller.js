@@ -60,7 +60,7 @@ exports.getAdminPaper = async (req, res) => {
     ]);
     response._doc.writers = writers;
 
-    return successfulRes(res, 200, { response });
+    return successfulRes(res, 200, response );
   } catch (e) {
     return failedRes(res, 500, e);
   }
