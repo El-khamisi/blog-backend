@@ -8,7 +8,7 @@ if (!(req.get('Authorization') || req.cookies.authorization)) {
       throw new Error('Login first');
     }
     const token = req.get('Authorization') ? req.get('Authorization').split(' ')[1] : req.cookies.authorization;
-    console.log(token)
+    
 
     const verify = jwt.verify(token, TOKENKEY);
     if(verify){

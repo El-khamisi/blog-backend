@@ -59,9 +59,9 @@ exports.getAdminArticle = async (req, res) => {
         $project: {_id: 1, name: 1}
       }
     ]);
-    response.writers = writers;
+    response._doc.writers = writers;
 
-    return successfulRes(res, 200, {...response, ...writers});
+    return successfulRes(res, 200, {response});
   } catch (e) {
     return failedRes(res, 500, e);
   }
