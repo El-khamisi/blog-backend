@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { authN } = require('../../middelwares/authN');
-const { myWork, isGuest, isAuthor } = require('../../middelwares/authZ');
+const { myWork, isGuest, isAuthor, isAdmin } = require('../../middelwares/authZ');
 
 const { imageUpload } = require('../../config/multer');
 const { getPapers, getPaper, addPaper, updatePaper, deletePaper, sharePaper, getAdminPaper } = require('./paper.controller');
