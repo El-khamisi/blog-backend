@@ -11,7 +11,12 @@ if (!(req.get('Authorization') || req.cookies.authorization)) {
     console.log(token)
 
     const verify = jwt.verify(token, TOKENKEY);
-    res.locals.user = verify;
+    if(verify){
+
+      res.locals.user = verify;
+    }else{
+      throw new Error('Login first');
+    }
     next();
   } catch (e) {
     return failedRes(res, 401, e);
