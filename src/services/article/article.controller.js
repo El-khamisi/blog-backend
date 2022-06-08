@@ -60,9 +60,8 @@ exports.getAdminArticle = async (req, res) => {
       }
     ]);
     response.writers = writers;
-    console.log(response);
-    console.log(writers)
-    return successfulRes(res, 200, response);
+
+    return successfulRes(res, 200, {...response, ...writers});
   } catch (e) {
     return failedRes(res, 500, e);
   }
