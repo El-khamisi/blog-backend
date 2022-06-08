@@ -28,7 +28,7 @@ exports.getUser = async (req, res) => {
     if (response.is_deleted) {
       throw new Error('User is deleted');
     }
-    response = response.populate('articles papers videos');
+    response = await response.populate('articles papers videos');
     response.password = undefined;
 
     return successfulRes(res, 200, response);
