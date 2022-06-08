@@ -53,7 +53,7 @@ exports.getAdminArticle = async (req, res) => {
     const response = await Article.findById(_id).exec();
     const writers = await User.aggregate([
       {
-        $match: {$or:[{role: `Author`}, {}]},
+        $match: {role: Author},
       },
       {
         $project: {_id: 1, name: 1}
