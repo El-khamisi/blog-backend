@@ -12,6 +12,7 @@ const videoSchema = new mongoose.Schema(
     series: { type: mongoose.Types.ObjectId, ref: 'Video_series' },
     youtube_url: { type: String },
     about: { type: String },
+    body: { type: String },
     numberOfShare: { type: Number, default: 0 },
     numberOfView: { type: Number, default: 0 },
   },
